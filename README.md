@@ -14,7 +14,7 @@ After that challenging year, I switched to a [different university](https://www.
 
 ### My Introduction to Data: Research!
 
-	These experiences and conversations planted the seeds for me to feel comfortable taking on the math components of data science. Simultaneously, during my BA, I was offered the chance to run a research project under my mentors, Dr. Orna Sharon-Zagoory and Dr. Ruth Feldman at the [Center for Developmental and Social Neuroscience](https://ruthfeldmanlab.com/). This particular research focused on biomarkers and interpersonal reactions found in dyads of breastfeeding mothers and infants. I was responsible for recruiting participants, cleaning the data using SPSS, and collecting all of the physical samples and surveys at the participant’s homes.
+These experiences and conversations planted the seeds for me to feel comfortable taking on the math components of data science. Simultaneously, during my BA, I was offered the chance to run a research project under my mentors, Dr. Orna Sharon-Zagoory and Dr. Ruth Feldman at the [Center for Developmental and Social Neuroscience](https://ruthfeldmanlab.com/). This particular research focused on biomarkers and interpersonal reactions found in dyads of breastfeeding mothers and infants. I was responsible for recruiting participants, cleaning the data using SPSS, and collecting all of the physical samples and surveys at the participant’s homes.
   
 After my research experience, I noticed that I really liked working with data and computers, but it had been drilled pretty hard into me that when you have a BA in psychology, there are only two traditional options; either you become a clinician or an academic researcher. 
 
