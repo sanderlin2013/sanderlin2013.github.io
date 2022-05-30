@@ -32,7 +32,7 @@ Eventually, I began to trace what work I had most enjoyed in the past. One exper
 # Getting Started In Data Analytics And Data Science 
 
 
- I decided to apply for some part time jobs as a data analyst, so I could gain work experience and do a data science bootcamp simultaneously. I quickly got an entry position as a data analyst at a community mental health clinic due to my experience in Qualtrics, SPSS, and rudimentary R, and I am currently working there today. I’m also enrolled in a part time data science program through Flatiron.
+ I decided to apply for some part time jobs as a data analyst, so I could gain work experience and do a data science bootcamp simultaneously. I quickly got an entry position as a data analyst at a community mental health clinic due to my experience in Qualtrics, SPSS, and rudimentary R, and I am currently working there today. I’m also enrolled in a part time data science program through [Flatiron](https://flatironschool.com/courses/data-science-bootcamp/).
 
 ![hiking pic](images/hikepic.jpg)
 
