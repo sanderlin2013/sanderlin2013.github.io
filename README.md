@@ -15,6 +15,8 @@ As I got older, my self identification as an English (and therefore not a math) 
 
 After that challenging year, I switched to a [different university](https://www.runi.ac.il/en/) in Israel which offered an international B.A. psychology program. This time around, with a statistics class taught in English, I was determined to not let math rock me. I was fortunate to have women professors and teaching assistants who spoke with me personally about gender stereotypes around math. They enlightened me about [math anxiety](https://www.oxfordlearning.com/what-is-math-anxiety/), which [women are more prone to](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8034611/) and can hinder their pursuit of STEM careers. (One of these professors shared with me, “I teach math, but sometimes when someone asks me a math question out of the blue, my stomach drops. It takes me a minute to remember I do know how to do this - and not only that, but that I’m good at it.”) Hearing about these stereotypes and anxieties, along with studying in English, gave me the confidence to take another two semesters of statistics. By the end of the first semester, statistics was one of my favorite courses. So much so that I began to informally tutor other students before class on an ad-hoc basis.
 
+![pic of physical research samples I took](images/breastmilkresearch.png)
+
 # My Introduction to Data: Research!
 
 
