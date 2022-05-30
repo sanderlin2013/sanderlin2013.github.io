@@ -1,6 +1,6 @@
 Hey y’all! My name is Rachel Sanderlin. I recently decided to break into data science and blog about it along the way. This is my first blog ever, so thanks for coming along with me on this adventure! Today I’m going to write a bit about my personal and circuitous path into data science. 
 
-![picture of my math notes](images/mathnotebook.jpg)
+
 
 # Growing Up ‘Bad at Math’
 
