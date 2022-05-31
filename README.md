@@ -39,6 +39,6 @@ Eventually, I began to trace what work I had most enjoyed in the past. One exper
 
 ![hiking pic](images/hikepic.jpg)
 
-That's my journey so far! I’ll be adding future posts about my forays into data science and analysis over the next few months. Thanks for reading to the end, and feel free to reach out to me at **sanderlin2013@gmail.com** if you want to connect about math, math anxiety, data science, or have any related questions! 
+That's my journey so far! I’ll be adding future posts about my forays into data science and analysis over the next few months. Thanks for reading to the end, and feel free to reach out to me if you want to connect about math, math anxiety, data science, or have any related questions! 
 
 
