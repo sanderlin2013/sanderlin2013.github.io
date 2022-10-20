@@ -22,7 +22,7 @@ The analysis focused on three main questions:
 
 For this blog post, we're only going to focus on the *first* question. I was able to find a statistically significant association between a home's living area and its sales price, with an R^2 of .46. This means that the **living area explains 46% of the variability of home's sales price** - a hefty chunk! (See the model output below.)
 
-![picture of sqft model](../images/base_model_log100.png)
+![picture of sqft model](/images/base_model_log100.png)
 
 With the living area of a home accounting for so much of the home's value, I thought it would be useful to use the model we created to predict how much a home's sales price would increase as the living area increased.
 
@@ -91,7 +91,7 @@ plt.tight_layout()
 plt.show();
 ```
 
-![final graph of predictions](../images/graph_homeprice_100sqft_living.png)
+![final graph of predictions](/images/graph_homeprice_100sqft_living.png)
 
 
 
