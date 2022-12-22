@@ -38,7 +38,7 @@ def replace_NAN_0(X_df):
     return X_df
 ```
 
- I then used a `[FunctionTransformer]`(https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.FunctionTransformer.html#sklearn.preprocessing.FunctionTransformer) on these functions so I could use them in my pipeline.
+ I then used a [FunctionTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.FunctionTransformer.html#sklearn.preprocessing.FunctionTransformer) on these functions so I could use them in my pipeline.
  
 ```
 # Instantiate transformers
@@ -51,9 +51,9 @@ NAN_0 = FunctionTransformer(replace_NAN_0)
 
 ```
 
-I decided to use a `[ColumnTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer)` so that I could use pre-made packages to process my data. 
+I decided to use a [ColumnTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer) so that I could use pre-made packages to process my data. 
 I scaled my numeric ordinal and interval data using `MinMaxScaler` (this standardized all of the responses between 0-1, which was handy as most of the data was binary.)
-I used `[OneHotEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder)` in order to create dummy variables of the categorical features. 
+I used [OneHotEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder) in order to create dummy variables of the categorical features. 
 I then used `remainder="passthrough"` so that any columns not specified in the `ColumnTransformer` would be left alone.
 
 ```
@@ -74,7 +74,7 @@ col_transformer = ColumnTransformer(transformers= [
  
 ## Creating The Model Pipeline
 
-All together, this was the preprocessing pipeline, using sklearns `[Pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline)`
+All together, this was the preprocessing pipeline, using sklearns [Pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline)
  
  ```
  # Preprocessing Pipeline (Yey!)
@@ -87,7 +87,7 @@ preprocessing_pipe = Pipeline(steps=[
     
  ```
 
-I then used this pipeline as a sub-pipeline in our first model pipeline. For the first model I chose to use a `[LogisticRegression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression)` model. `LogisticRegression` classification models are great at handling binary dependent variables, which is what we have in our dataset, so it seemed like a good model to start with. 
+I then used this pipeline as a sub-pipeline in our first model pipeline. For the first model I chose to use a [LogisticRegression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression) model. `LogisticRegression` classification models are great at handling binary dependent variables, which is what we have in our dataset, so it seemed like a good model to start with. 
 
 ```
 logreg_optimized_pipe = Pipeline(steps=[("preprocessing_pipe", preprocessing_pipe),
