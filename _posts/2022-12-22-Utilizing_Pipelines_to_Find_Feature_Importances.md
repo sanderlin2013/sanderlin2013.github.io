@@ -1,4 +1,4 @@
-# Navigating Pipelines to Find Feature Importances
+# Utilizing Pipelines to Find Feature Importances
 
 ## Introduction
 ![vacc](/images/vaccination.png)
