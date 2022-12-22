@@ -52,7 +52,7 @@ NAN_0 = FunctionTransformer(replace_NAN_0)
 ```
 
 I decided to use a [ColumnTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer) so that I could use pre-made packages to process my data. 
-I scaled my numeric ordinal and interval data using `MinMaxScaler` (this standardized all of the responses between 0-1, which was handy as most of the data was binary.)
+I scaled my numeric ordinal and interval data using [`MinMaxScaler`](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html) (this standardized all of the responses between 0-1, which was handy as most of the data was binary).
 I used [OneHotEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder) in order to create dummy variables of the categorical features. 
 I then used `remainder="passthrough"` so that any columns not specified in the `ColumnTransformer` would be left alone.
 
@@ -74,7 +74,7 @@ col_transformer = ColumnTransformer(transformers= [
  
 ## Creating The Model Pipeline
 
-All together, this was the preprocessing pipeline, using sklearns [Pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline)
+All together, this was the preprocessing pipeline, using sklearns [Pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline).
  
  ```
  # Preprocessing Pipeline (Yey!)
