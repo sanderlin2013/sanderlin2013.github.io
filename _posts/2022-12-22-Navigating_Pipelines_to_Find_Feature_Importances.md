@@ -1,36 +1,101 @@
 # Navigating Pipelines to Find Feature Importances
 
 ## Introduction
-In my most recent project, I analyzed the CDC’s National 2009 H1N1 Flu Survey. The goal of this analysis was to create models that could find the most important features in the survey, so we could use those features to create a new survey on COVID-19 vaccine compliance. The original data included questions about both H1N1 and the seasonal flu vaccine compliance, but I choose to focus on only the seasonal flu. I figured that as COVID-19 vaccines and boosters become more routine like the seasonal flu vaccine, the season flu questions would be more relevant to the new survey. 
+In my most recent [project](https://github.com/sanderlin2013/Predicting-Flu-Vaccines), I analyzed the CDC’s [National 2009 H1N1 Flu Survey](https://www.drivendata.org/competitions/66/flu-shot-learning/page/211/). The goal of this analysis was to create models that could find the most important features in the survey, so we could use those features to create a new survey on COVID-19 vaccine compliance. The original data included questions about both H1N1 and the seasonal flu vaccine compliance, but I choose to focus on only the seasonal flu. I figured that as COVID-19 vaccines and boosters become more routine like the seasonal flu vaccine, the season flu questions would be more relevant to the new survey. 
 
-I wanted to be able to build and test a few different models, so I could choose the best one to base my analysis and recommendations on. In order to make this process more efficient, I decided to build a preprocessing pipeline, which would contain most of the preprocessing steps needed to prepare the data before modeling it. 
+I wanted to be able to build and test a few different models, so I could choose the best one to base my analysis and recommendations on. In order to make this process more efficient, I decided to build a preprocessing pipeline, which would contain most of the preprocessing steps needed to prepare the data before creating a modeling pipeline. 
 
-##Building Preprocessing Pipeline
+## Building A Preprocessing Pipeline
 
 I began by creating some functions to replace some of the missing data in the dataset.
 
-**insert code here**
+```
+#create functions for preprocessing
 
- I then used a `FunctionTransformer` on these functions so I could use them in my pipeline. 
+# function to replace NaN's in the ordinal and interval data 
+def replace_NAN_median(X_df):
+    opinions = ['opinion_seas_vacc_effective', 'opinion_seas_risk', 'opinion_seas_sick_from_vacc', 'household_adults',
+                'household_children']
+    for column in opinions:
+        X_df[column].replace(np.nan, X_df[column].median(), inplace = True)
+    return X_df
 
-**insert code here**
+# function to replace NaN's in the catagorical data     
+def replace_NAN_mode(X_df):
+    miss_cat_features = ['education', 'income_poverty', 'marital_status', 'rent_or_own', 'employment_status']
+    for column in miss_cat_features:
+        X_df[column].replace(np.nan, statistics.mode(X_df[column]), inplace = True)
+    return X_df
 
-I decided to use a `ColumnTransformer` so that I could use pre-made packages to process my data. 
+# function to replace NaN's in the binary data                                
+def replace_NAN_0(X_df):
+    miss_binary = ['behavioral_antiviral_meds', 'behavioral_avoidance','behavioral_face_mask' ,
+    'behavioral_wash_hands', 'behavioral_large_gatherings', 'behavioral_outside_home',
+    'behavioral_touch_face', 'doctor_recc_seasonal', 'chronic_med_condition', 
+    'child_under_6_months', 'health_worker','health_insurance']
+    for column in miss_binary:
+        X_df[column].replace(np.nan, 0, inplace = True)
+    return X_df
+```
+
+ I then used a `[FunctionTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.FunctionTransformer.html#sklearn.preprocessing.FunctionTransformer)` on these functions so I could use them in my pipeline.
+ 
+```
+# Instantiate transformers
+
+# I used functions instead of SimpleImputer as the functions preserved  the feature names 
+# throughout the pipeline
+NAN_median = FunctionTransformer(replace_NAN_median)
+NAN_mode = FunctionTransformer(replace_NAN_mode)
+NAN_0 = FunctionTransformer(replace_NAN_0)
+
+```
+
+I decided to use a `[ColumnTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer)` so that I could use pre-made packages to process my data. 
 I scaled my numeric ordinal and interval data using `MinMaxScaler` (this standardized all of the responses between 0-1, which was handy as most of the data was binary.)
-I used `OneHotEncoder` in order to create dummy variables of the categorical features. 
+I used `[OneHotEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder)` in order to create dummy variables of the categorical features. 
 I then used `remainder="passthrough"` so that any columns not specified in the `ColumnTransformer` would be left alone.
 
-**insert code here**
+```
+col_transformer = ColumnTransformer(transformers= [
+    # I chose MinMaxScaler vs. StandardScaler in order to keep my data in the binary range (0-1)
+    ("scaler", MinMaxScaler(), ['opinion_seas_vacc_effective', 'opinion_seas_risk',
+                                'opinion_seas_sick_from_vacc', 
+                                'household_adults', 'household_children']),
+     
+     # OHE catagorical string data
+    ("ohe", OneHotEncoder(sparse = False, drop = "first"), ['age_group','education', 'race', 'sex', 
+                                'income_poverty', 'marital_status', 'rent_or_own',
+                                'employment_status', 'census_msa'])],
+    verbose_feature_names_out = False,
+    remainder="passthrough")
+    
+ ```
+ 
+## Creating The Model Pipeline
 
-## Creating Model Pipeline
+All together, this was the preprocessing pipeline, using sklearns `[Pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline)`
+ 
+ ```
+ # Preprocessing Pipeline (Yey!)
+preprocessing_pipe = Pipeline(steps=[
+    ("NAN_median", NAN_median), 
+    ("NAN_mode", NAN_mode),
+    ("NAN_0", NAN_0),
+    ("col_transformer", col_transformer)
+    ])
+    
+ ```
 
-Here was the final pipeline:
+I then used this pipeline as a sub-pipeline in our first model pipeline. For the first model I chose to use a `[LogisticRegression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression)` model. `LogisticRegression` classification models are great at handling binary dependent variables, which is what we have in our dataset, so it seemed like a good model to start with. 
 
-**insert code here**
+```
+logreg_optimized_pipe = Pipeline(steps=[("preprocessing_pipe", preprocessing_pipe),
+                                    ("log_reg", LogisticRegression(solver = 'liblinear',
+                                                                   random_state = RANDOM_STATE,
+                                                                   C = 10, penalty= 'l2'))])
+```
 
-I then used this pipeline as a sub-pipeline in our first model pipeline. For the first model I chose to use a `LogisticRegression` model. `LogisticRegression` classification models are great at handling binary dependent variables, which is what we have in our dataset, so it seemed like a good place to start. 
-
-**insert code here**
 ## Navigating a Multi-Layered Pipeline
 
 After creating this pipeline, I want to be able to pull out the feature importances so we know which features performed best in the model. There are two parts of feature importances to pull out of the pipeline - the feature **names** and the feature importance **values**. Fortunately, `LogisticRegression` has a built-in attribute `coef_` which lets us pull the values of the features easily. To use this attribute, we first need to navigate the pipeline!
