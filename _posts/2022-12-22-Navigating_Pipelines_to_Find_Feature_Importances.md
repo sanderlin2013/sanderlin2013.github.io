@@ -3,17 +3,17 @@
 ## Introduction
 ![vacc](/images/vaccination.png)
 
-In my most recent [project](https://github.com/sanderlin2013/Predicting-Flu-Vaccines), I analyzed the CDC’s [National 2009 H1N1 Flu Survey](https://www.drivendata.org/competitions/66/flu-shot-learning/page/211/). The goal of this analysis was to create models that could find the most important features in the survey, so we could use those features to create a new survey on COVID-19 vaccine compliance. The original data included questions about both H1N1 and the seasonal flu vaccine compliance, but I choose to focus on only the seasonal flu. I figured that as COVID-19 vaccines and boosters become more routine like the seasonal flu vaccine, the season flu questions would be more relevant to the new survey. 
+In my most recent [project](https://github.com/sanderlin2013/Predicting-Flu-Vaccines), I analyzed the CDC’s [National 2009 H1N1 Flu Survey](https://www.drivendata.org/competitions/66/flu-shot-learning/page/211/). The goal of this analysis was to create models that could find the most important features in the survey, so we could use those features to create a new survey on COVID-19 vaccine compliance. The original data included questions about both H1N1 and the seasonal flu vaccine compliance, but I choose to focus on only the seasonal flu. I figured that as COVID-19 vaccines and boosters become more routine like the seasonal flu vaccine, the seasonal flu questions would be more relevant to the new survey. 
 
 ![covid-sticker](/images/covid-sticker.png)
 
-I wanted to be able to build and test a few different models, so I could choose the best one to base my analysis and recommendations on. In order to make this process more efficient, I decided to build a preprocessing pipeline, which would contain most of the preprocessing steps needed to prepare the data before creating a modeling pipeline. 
+I wanted to be able to build and test a few different models, so I could choose the best one to base my analysis and recommendations on. In order to make this process more efficient, I decided to build a preprocessing pipeline, which would contain most of the preprocessing steps needed to prepare the data before creating a modeling pipeline. This pipeline would be a reusable and efficient way to build future models.
 
 ## Building A Preprocessing Pipeline
 
 I began by creating some functions to replace some of the missing data in the dataset.
 
-```
+```python
 #create functions for preprocessing
 
 # function to replace NaN's in the ordinal and interval data 
