@@ -273,10 +273,10 @@ def plot_importance(feat_names, feat_importances, col1_name, col2_name, title, n
 plot_importance(feature_names, coefficients, "Feature Names", "Coefficients",
                "Top 10 Logistic Regression Features ", num_features = 10)
                
-# Barchart of Top 10 Logistic Regression Features
 ```
+![LR Model](images/LR_model.png)
 
-Now you know the basics of navigating multi-tiered pipelines. 
+Now you know the basics of navigating multi-tiered pipelines and finding feature importances within them. 
 
 
 
