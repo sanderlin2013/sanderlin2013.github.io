@@ -193,7 +193,7 @@ Whoops! Seems like we didn’t quite get what we wanted - we need to further spe
 ```
 
 # code
-logreg_optimized_pipe.steps[1].coef_
+logreg_optimized_pipe.steps[1][1].coef_
 
 # print out
 array([[ 2.23797369,  2.13000849, -0.82215345, -0.18786038, -0.16929111,
@@ -243,9 +243,40 @@ Great! Now let's put it all together and create a graph of the top 10 features i
 
 ## Plotting Feature Importances
 
-**insert code here**
+```
+# code 
+coefficients = logreg_optimized_pipe.steps[1][1].coef_
+feature_names = list(logreg_optimized_pipe.named_steps["preprocessing_pipe"][3].get_feature_names_out())
 
-Now you know the basics of navigating multi-tiered pipelines.  
+# creating function so we can plot model results
+def plot_importance(feat_names, feat_importances, col1_name, col2_name, title, num_features = 15):
+    
+    # create dataframe
+    
+    #feature importance is array - we transpose it to make it usable in a DataFrame
+    df = pd.concat([pd.DataFrame(feat_names), pd.DataFrame(np.transpose(feat_importances))], axis = 1)
+    # specify column names
+    df.columns = [col1_name, col2_name]
+    # sort by feat_importances
+    df_sort1 = df.sort_values(by=col2_name, ascending=False, key = abs).head(num_features)
+    df_sorted = df_sort1.sort_values(by=col2_name, ascending=True, key = abs)
+    
+    # plot bar chart
+    plt.figure(figsize=(8,8))
+    # color  was choosen because it is similar to the color of the CDC logo
+    plt.barh(df_sorted[col1_name], df_sorted[col2_name], align='center', color = "dodgerblue")
+    plt.yticks(np.arange(len(df_sorted[col1_name])), df_sorted[col1_name]) 
+    plt.xlabel(col2_name)
+    plt.ylabel(col1_name)
+    plt.title(title);
+    
+plot_importance(feature_names, coefficients, "Feature Names", "Coefficients",
+               "Top 10 Logistic Regression Features ", num_features = 10)
+               
+# Barchart of Top 10 Logistic Regression Features
+```
+
+Now you know the basics of navigating multi-tiered pipelines. 
 
 
 
