@@ -44,7 +44,7 @@ def replace_NAN_0(X_df):
 
  I then used a [`FunctionTransformer`](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.FunctionTransformer.html#sklearn.preprocessing.FunctionTransformer) on these functions so I could use them in my pipeline.
  
-```
+```python
 # Instantiate transformers
 
 # I used functions instead of SimpleImputer as the functions preserved  the feature names 
@@ -60,7 +60,7 @@ I scaled my numeric ordinal and interval data using [`MinMaxScaler`](https://sci
 I used [`OneHotEncoder`](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder) in order to create dummy variables of the categorical features. 
 I then used `remainder="passthrough"` so that any columns not specified in the `ColumnTransformer` would be left alone.
 
-```
+```python
 col_transformer = ColumnTransformer(transformers= [
     # I chose MinMaxScaler vs. StandardScaler in order to keep my data in the binary range (0-1)
     ("scaler", MinMaxScaler(), ['opinion_seas_vacc_effective', 'opinion_seas_risk',
@@ -80,8 +80,8 @@ col_transformer = ColumnTransformer(transformers= [
 
 All together, this was the preprocessing pipeline, using sklearns [`Pipeline`](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline).
  
- ```
- # Preprocessing Pipeline (Yey!)
+ ```python
+# Preprocessing Pipeline (Yey!)
 preprocessing_pipe = Pipeline(steps=[
     ("NAN_median", NAN_median), 
     ("NAN_mode", NAN_mode),
@@ -91,9 +91,9 @@ preprocessing_pipe = Pipeline(steps=[
     
  ```
 
-I then used this pipeline as a sub-pipeline in our first model pipeline. For the first model I chose to use a [`LogisticRegression`](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression) model. `LogisticRegression` classification models are great at handling binary dependent variables, which is what we have in our dataset, so it seemed like a good model to start with. 
+I then used this as a sub-pipeline in our first modeling pipeline. I chose to use a [`LogisticRegression`](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression) as the initial model. I chose `LogistcRegression` as they are built to handle *binary* dependent variables, which is what we have in our dataset. 
 
-```
+```python
 logreg_optimized_pipe = Pipeline(steps=[("preprocessing_pipe", preprocessing_pipe),
                                     ("log_reg", LogisticRegression(solver = 'liblinear',
                                                                    random_state = RANDOM_STATE,
@@ -105,32 +105,33 @@ logreg_optimized_pipe = Pipeline(steps=[("preprocessing_pipe", preprocessing_pip
 After creating this pipeline, I want to be able to pull out the feature importances so we know which features performed best in the model. There are two parts of feature importances to pull out of the pipeline - the feature **names** and the feature importance **values**. Fortunately, `LogisticRegression` has a built-in attribute `coef_` which lets us pull the values of the features easily. To use this attribute, we first need to navigate the pipeline!
 
 Lets look at a print out of our pipeline: 
-```
+
+```python
 Pipeline(steps=[('preprocessing_pipe',
                  Pipeline(steps=[('NAN_median',
-                                  FunctionTransformer(func=<function replace_NAN_median at 0x00000204BE035A60>)),
-                                 ('NAN_mode',
-                                  FunctionTransformer(func=<function replace_NAN_mode at 0x00000204BD44A430>)),
-                                 ('NAN_0',
-                                  FunctionTransformer(func=<function replace_NAN_0 at 0x00000204BD44A3A0>)),
-                                 ('col_transformer',
-                                  ColumnTransformer(rem...
-                                                                    'opinion_seas_sick_from_vacc',
-                                                                    'household_adults',
-                                                                    'household_children']),
-                                                                  ('ohe',
-                                                                   OneHotEncoder(drop='first',
-                                                                                 sparse=False),
-                                                                   ['age_group',
-                                                                    'education',
-                                                                    'race',
-                                                                    'sex',
-                                                                    'income_poverty',
-                                                                    'marital_status',
-                                                                    'rent_or_own',
-                                                                    'employment_status',
-                                                                    'census_msa'])],
-                                                    verbose_feature_names_out=False))])),
+                           FunctionTransformer(func=<function replace_NAN_median at 0x00000204BE035A60>)),
+                          ('NAN_mode',
+                           FunctionTransformer(func=<function replace_NAN_mode at 0x00000204BD44A430>)),
+                          ('NAN_0',
+                           FunctionTransformer(func=<function replace_NAN_0 at 0x00000204BD44A3A0>)),
+                          ('col_transformer',
+                           ColumnTransformer(rem...
+                                           'opinion_seas_sick_from_vacc',
+                                           'household_adults',
+                                           'household_children']),
+                                         ('ohe',
+                                          OneHotEncoder(drop='first',
+                                                        sparse=False),
+                                          ['age_group',
+                                           'education',
+                                           'race',
+                                           'sex',
+                                           'income_poverty',
+                                           'marital_status',
+                                           'rent_or_own',
+                                           'employment_status',
+                                           'census_msa'])],
+                           verbose_feature_names_out=False))])),
                 ('log_reg',
                  LogisticRegression(C=10, random_state=42,
                                     solver='liblinear'))])
@@ -139,37 +140,37 @@ Pipeline(steps=[('preprocessing_pipe',
 
 One way of navigating the pipeline is using `.steps`. This lets us call the specific sections of the pipeline that we want. It’s important to remember that Python uses 0 based numbering, so the first item in our pipeline lists will always be indexed as 0, the second will be 1 and so on. For example, calling using `.steps[0]` will call the first part of our pipeline - the preprocessing pipeline. 
 
-```
+```python
 # code 
 logreg_optimized_pipe.steps[0]
 
 # print out
 ('preprocessing_pipe',
  Pipeline(steps=[('NAN_median',
-                  FunctionTransformer(func=<function replace_NAN_median at 0x00000204BE035A60>)),
-                 ('NAN_mode',
-                  FunctionTransformer(func=<function replace_NAN_mode at 0x00000204BD44A430>)),
-                 ('NAN_0',
-                  FunctionTransformer(func=<function replace_NAN_0 at 0x00000204BD44A3A0>)),
-                 ('col_transformer',
-                  ColumnTransformer(remainder='passthrough',
-                                    transformers=[('scaler', MinMaxScaler(),
-                                                   ['opinion_seas_vacc_effective',
-                                                    'opinion_seas_risk',
-                                                    'opinion_seas_sick_from_vacc',
-                                                    'household_adults',
-                                                    'household_children']),
-                                                  ('ohe',
-                                                   OneHotEncoder(drop='first',
-                                                                 sparse=False),
-                                                   ['age_group', 'education',
-                                                    'race', 'sex',
-                                                    'income_poverty',
-                                                    'marital_status',
-                                                    'rent_or_own',
-                                                    'employment_status',
-                                                    'census_msa'])],
-                                    verbose_feature_names_out=False))]))
+            FunctionTransformer(func=<function replace_NAN_median at 0x00000204BE035A60>)),
+           ('NAN_mode',
+            FunctionTransformer(func=<function replace_NAN_mode at 0x00000204BD44A430>)),
+           ('NAN_0',
+            FunctionTransformer(func=<function replace_NAN_0 at 0x00000204BD44A3A0>)),
+           ('col_transformer',
+            ColumnTransformer(remainder='passthrough',
+                   transformers=[('scaler', MinMaxScaler(),
+                                  ['opinion_seas_vacc_effective',
+                                   'opinion_seas_risk',
+                                   'opinion_seas_sick_from_vacc',
+                                   'household_adults',
+                                   'household_children']),
+                                 ('ohe',
+                                  OneHotEncoder(drop='first',
+                                                sparse=False),
+                                  ['age_group', 'education',
+                                   'race', 'sex',
+                                   'income_poverty',
+                                   'marital_status',
+                                   'rent_or_own',
+                                   'employment_status',
+                                   'census_msa'])],
+                   verbose_feature_names_out=False))]))
                                     
 ```
 
@@ -177,7 +178,7 @@ logreg_optimized_pipe.steps[0]
 
 For our example, we can navigate into the *second* part of our pipeline using .`steps` and then call the `.coef_` attribute to get our coefficients.
 
-```
+```python
 
 # code
 logreg_optimized_pipe.steps[1].coef_
@@ -194,7 +195,7 @@ AttributeError: 'tuple' object has no attribute 'coef_'
 
 Whoops! Seems like we didn’t quite get what we wanted - we need to further specify exactly where we want to go in the pipeline. By using `.steps[1][1]` we should first navigate to the model pipeline, and then within the model pipeline be directed specifically to the model we created. Lets try re-running the `coef_` attribute on this line of code. 
 
-```
+```python
 
 # code
 logreg_optimized_pipe.steps[1][1].coef_
@@ -215,9 +216,9 @@ Perfect!
 
 ### Getting Feature Importance Names
 
-For the second part of feature importances we will need to find the feature names. The way that I found to do this was to navigate to the `OneHotEncoder` step in our preprocessing pipeline. Then we can call `.get_feature_names_out()` to pull out the feature names that will be put into the model in the next step of our pipeline. These names match up with the `coefficients` we found above. Here we will use a different method to navigate the pipeline `.named_steps`. This allows us to navigate the pipeline using the names we gave different sections of the pipeline. After using those names, we still can use Python’s 0 based numbering to pull out the specific sections we want to look at. 
+For the second part of feature importances we will need to find the feature names. The way that I found to do this was to navigate to the `OneHotEncoder` step in our preprocessing pipeline. Then we can call `.get_feature_names_out()` to pull out the feature names that will be put into the model in the next step of our pipeline. These names match up with the `coefficients` we found above. Here we will use a different method to navigate the pipeline `.named_steps`. This allows us to navigate the pipeline using the names we gave different sections of the pipeline. After using those names, we still can use Python’s indeces to pull out the specific sections we want to look at. 
 
-```
+```python
 # code
 logreg_optimized_pipe.named_steps["preprocessing_pipe"][3].get_feature_names_out()
 
@@ -243,11 +244,11 @@ array(['opinion_seas_vacc_effective', 'opinion_seas_risk',
 
 ```
 
-Great! Now let's put it all together and create a graph of the top 10 features in the model 
+Great! Now let's put it all together and create a graph of the top 10 features in the model.
 
 ## Plotting Feature Importances
 
-```
+```python
 # code 
 coefficients = logreg_optimized_pipe.steps[1][1].coef_
 feature_names = list(logreg_optimized_pipe.named_steps["preprocessing_pipe"][3].get_feature_names_out())
