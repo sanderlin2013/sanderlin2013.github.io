@@ -38,7 +38,7 @@ def replace_NAN_0(X_df):
     return X_df
 ```
 
- I then used a `[FunctionTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.FunctionTransformer.html#sklearn.preprocessing.FunctionTransformer)` on these functions so I could use them in my pipeline.
+ I then used a `[FunctionTransformer]`(https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.FunctionTransformer.html#sklearn.preprocessing.FunctionTransformer) on these functions so I could use them in my pipeline.
  
 ```
 # Instantiate transformers
