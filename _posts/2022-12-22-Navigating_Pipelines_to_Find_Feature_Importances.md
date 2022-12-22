@@ -274,7 +274,7 @@ plot_importance(feature_names, coefficients, "Feature Names", "Coefficients",
                "Top 10 Logistic Regression Features ", num_features = 10)
                
 ```
-![LR Model](images/LR_model.png)
+![LR Model](/images/LR_model.png)
 
 Now you know the basics of navigating multi-tiered pipelines and finding feature importances within them. 
 
